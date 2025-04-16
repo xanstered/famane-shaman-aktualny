@@ -24,6 +24,24 @@ public class PlayerMovement : MonoBehaviour
     public float sprintSpeed;
     private bool isSprinting;
 
+    [Header("Parkour")]
+    public bool enableParkour = true;
+    public float wallClimbingSpeed = 5f;
+    public float climbUpForce = 7f;
+    private bool isWallClimbing;
+    private bool isVaulting;
+    private Vector3 wallNormal;
+    private Vector3 lastWallPosition;
+
+    [Header("Wall Detection")]
+    public float wallCheckDistance = 0.7f;
+    public float minJumpHeight = 1.5f;
+    public LayerMask whatIsWall;
+    private bool isWallAhead;
+    private bool isLedgeDetected;
+    private Vector3 ledgePos;
+    private Vector3 ledgeNormal;
+
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
     public KeyCode crouchKey = KeyCode.LeftControl;
@@ -39,9 +57,10 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip walkSound;
     public AudioClip jumpSound;
     public AudioClip crouchSound;
+    public AudioClip climbSound;
 
     private float footstepTimer = 0f;
-    private float footstepInterval = 0.4f; 
+    private float footstepInterval = 0.4f;
 
     public Transform orientation;
 
@@ -68,7 +87,7 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.8f, whatIsGround);
-    
+
         MyInput();
         SpeedControl();
         HandleFootsteps();
@@ -91,7 +110,7 @@ public class PlayerMovement : MonoBehaviour
 
             if (footstepTimer <= 0)
             {
-                // interwa³ krokow zalezy tu od predkosci
+                // interwa  krokow zalezy tu od predkosci
                 if (isSprinting)
                     footstepInterval = 0.5f;
                 else if (isCrouching)
@@ -111,8 +130,21 @@ public class PlayerMovement : MonoBehaviour
     {
         if (walkSound != null && audioSource != null)
         {
-            audioSource.pitch = Random.Range(0.9f, 1.1f);
+            if (isSprinting)
+            {
+                audioSource.pitch = Random.Range(1.2f, 1.4f);
+            }
+            else if (isCrouching)
+            {
+                audioSource.pitch = Random.Range(0.8f, 0.9f);
+            }
+            else
+            {
+                audioSource.pitch = Random.Range(0.9f, 1.1f);
+            }
+
             audioSource.PlayOneShot(walkSound, isCrouching ? 0.5f : 1.0f);
+
         }
     }
 
@@ -233,11 +265,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-       if (isCrouching)
+        if (isCrouching)
         {
             StopCrouch();
         }
-        
+
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
@@ -247,4 +279,5 @@ public class PlayerMovement : MonoBehaviour
     {
         readyToJump = true;
     }
+
 }
