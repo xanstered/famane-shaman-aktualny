@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Pickupable
+  - Tree
+  - Axe
+  - Bucket
+  - Well
+  - Inspectable
+  - Pushable
+  - Ground
+  - FadeInOut
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Ground
+  - Water
+  - UI
+  - Item
+  - AxeLayer
+  - Axe
+  - whatIsGround
+  - Player
+  - inspectableLayer
+  - pickupLayer
+  - doorLayer
+  - Movable_object
+  - Interior
+  - whatIsLedge
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
